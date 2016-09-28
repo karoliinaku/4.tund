@@ -14,13 +14,32 @@
 	$signupUsernameError = "";
 	$signupEmailError = "";
 	$signupPasswordError = "";
-	$signupEmail = "";
+	$loginEmailError = "";
+	$genderError = "";
 	
+	$loginEmail = "";
+	$signupEmail = "";
+	$signupUsername = "";
+	$gender = "";
+	
+
+	if (isset ($_POST["loginEmail"]) ) {
+	
+		if (empty ($_POST["loginEmail"]) ) { 
+			$loginEmailError = "See väli on kohustuslik!";
+		} else {
+			$loginEmail = $_POST["loginEmail"];   //jätab e-maili meelde, kui parool on vale
+		}
+	}
+	
+
 	if (isset ($_POST["signupUsername"]) ) {
 	
 		if (empty ($_POST["signupUsername"]) ) { 
 			$signupUsernameError = "See väli on kohustuslik!";
 		
+		} else {
+			$signupUsername = $_POST["signupUsername"];
 		}
 	}
 	
@@ -60,21 +79,27 @@
 	// Kus tean, et ühtegi viga ei olnud ja saan kasutaja andmed salvestada
 	if (isset($_POST["signupPassword"]) &&
 		isset($_POST["signupEmail"]) &&
+		isset($_POST["signupUsername"]) &&
+		isset($_POST["gender"]) &&
 		empty($signupEmailError) && 
+		empty($signupUsernameError) && 
+		empty($genderError) && 
 		empty($signupPasswordError)  
 	) {
 			//näitab, millised andmed kasutaja sisestas: email, parool, räsi
 		echo "Salvestan...<br>";
+		echo "kasutajatunnus ".$signupUsername."<br>";
 		echo "email ".$signupEmail."<br>";
 		
 		$password = hash("sha512", $_POST["signupPassword"]);
 		
 		echo "parool ".$_POST["signupPassword"]."<br>";
 		echo "räsi ".$password."<br>";
+		echo "sugu ".$gender."<br>";
 		
 		//echo $serverUsername; 
 		
-		signup($signupEmail, $password);
+		signup($signupEmail, $password, $signupUsername, $gender);
 
 		}
 		
@@ -103,7 +128,8 @@
 
 		<form method="POST">
 			<p style="color:red;"><?=$error;?></p>
-			<input name="loginEmail" type="email" placeholder="E-maili aadress">
+			
+			<input name="loginEmail" type="email" value="<?=$loginEmail;?>" placeholder="E-maili aadress"> <?php echo $loginEmailError; ?>
 			
 			<br><br>
 			

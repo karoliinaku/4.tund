@@ -9,7 +9,7 @@
 	
 	$database = "if16_karoku";
 	
-	function signup ($email, $password) {
+	function signup ($email, $password, $username, $gender) {
 		
 		$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $GLOBALS["database"]);
 	
